@@ -10,6 +10,5 @@ public:
 	LoadingBar(sf::Vector2f size, sf::Vector2f position);
 	void update(float nominator, float denominator, sf::Time elapsed);
 	void render(sf::RenderWindow* window);
-	void GitTest();
 };
 
