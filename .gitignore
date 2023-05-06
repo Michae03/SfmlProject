@@ -1,0 +1,8 @@
+#Ignore all sfml files
+*.dll
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.aps
+*.sln
+x64/
