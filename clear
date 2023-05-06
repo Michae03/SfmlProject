@@ -1,0 +1,1175 @@
+[33mcommit e08cd6ff501328d37de87bb30ae7110355a8656b[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: Michal Nowak <michal.now03.gmail.com>
+Date:   Sat May 6 23:55:15 2023 +0200
+
+    Zmiany w GitLearning
+
+[1mdiff --git a/GitLearning.txt b/GitLearning.txt[m
+[1mnew file mode 100644[m
+[1mindex 0000000..a986e19[m
+[1m--- /dev/null[m
+[1m+++ b/GitLearning.txt[m
+[36m@@ -0,0 +1 @@[m
+[32m+[m[32mUcze sie gita, zmieniam coś[m
+\ No newline at end of file[m
+
+[33mcommit e3a8cd74c9ce107ca3856a5385976e3abb083fb6[m
+Author: Michal Nowak <michal.now03.gmail.com>
+Date:   Sat May 6 23:43:22 2023 +0200
+
+    First commit - commiting files to the repository
+
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mnew file mode 100644[m
+[1mindex 0000000..1a94909[m
+[1m--- /dev/null[m
+[1m+++ b/.gitignore[m
+[36m@@ -0,0 +1,8 @@[m
+[32m+[m[32m#Ignore all sfml files[m
+[32m+[m[32m*.dll[m
+[32m+[m[32m*.vcxproj[m
+[32m+[m[32m*.vcxproj.filters[m
+[32m+[m[32m*.vcxproj.user[m
+[32m+[m[32m*.aps[m
+[32m+[m[32m*.sln[m
+[32m+[m[32mx64/[m
+\ No newline at end of file[m
+[1mdiff --git a/Button.cpp b/Button.cpp[m
+[1mnew file mode 100644[m
+[1mindex 0000000..7d1fa05[m
+[1m--- /dev/null[m
+[1m+++ b/Button.cpp[m
+[36m@@ -0,0 +1,44 @@[m
+[32m+[m[32m#include "Button.h"[m
+[32m+[m
+[32m+[m[32mvoid Button::initVariables()[m
+[32m+[m[32m{[m
+[32m+[m[32m    hitbox = this->getGlobalBounds();[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mButton::Button()[m
+[32m+[m[32m{[m
+[32m+[m[32m    initVariables();[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mButton::Button(sf::Vector2f position, sf::Vector2f size, sf::Color color)[m
+[32m+[m[32m{[m
+[32m+[m[32m    this->setPosition(position);[m
+[32m+[m[32m    this->setSize(size);[m
+[32m+[m[32m    this->setFillColor(color);[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mbool Button::isClicked()[m
+[32m+[m[32m{[m
+[32m+[m[32m    float left = hitbox.left;[m
+[32m+[m[32m    float right = hitbox.left + hitbox.width;[m
+[32m+[m[32m    float top = hitbox.top;[m
+[32m+[m[32m    float bottom = hitbox.top + hitbox.height;[m
+[32m+[m
+[32m+[m[32m    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) &&[m
+[32m+[m[32m        sf::Mouse::getPosition().x >= left && sf::Mouse::getPosition().x <= right &&[m
+[32m+[m[32m        sf::Mouse::getPosition().y >= top && sf::Mouse::getPosition().y <= bottom )[m
+[32m+[m[32m    {[m
+[32m+[m[32m        return true;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    return false;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid Button::update()[m
+[32m+[m[32m{[m
+[32m+[m[32m    hitbox = this->getGlobalBounds();[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid Button::render(sf::RenderWindow* window)[m
+[32m+[m[32m{[m
+[32m+[m[32m    window->draw(*this);[m
+[32m+[m[32m}[m
+[1mdiff --git a/Button.h b/Button.h[m
+[1mnew file mode 100644[m
+[1mindex 0000000..1ef5da6[m
+[1m--- /dev/null[m
+[1m+++ b/Button.h[m
+[36m@@ -0,0 +1,32 @@[m
+[32m+[m[32m#pragma once[m
+[32m+[m[32m#include <SFML/System.hpp>[m
+[32m+[m[32m#include <SFML/Window.hpp>[m
+[32m+[m[32m#include <SFML/Graphics.hpp>[m
+[32m+[m[32m#include <iostream>[m
+[32m+[m[32mclass Button : public sf::RectangleShape[m
+[32m+[m[32m{[m
+[32m+[m[32mprivate:[m
+[32m+[m	[32m//Hitbox for mouse click for button[m
+[32m+[m	[32msf::FloatRect hitbox;[m
+[32m+[m	[32m//Function that initialize variables[m
+[32m+[m	[32mvoid initVariables();[m
+[32m+[m
+[32m+[m[32mpublic:[m
+[32m+[m
+[32m+[m	[32m//Constructor[m
+[32m+[m	[32mButton();[m
+[32m+[m	[32mButton(sf::Vector2f position, sf::Vector2f size, sf::Color color);[m
+[32m+[m
+[32m+[m	[32m//Function that returns true if user click in the button object[m
+[32m+[m	[32mbool isClicked();[m
+[32m+[m
+[32m+[m	[32m//Update button logic[m
+[32m+[m	[32mvoid update();[m
+[32m+[m
+[32m+[m	[32m//Renders button on screen[m
+[32m+[m	[32mvoid render(sf::RenderWindow* window);[m
+[32m+[m
+[32m+[m
+[32m+[m[41m	[m
+[32m+[m[32m};[m
+[32m+[m
+[1mdiff --git a/GameEngine.cpp b/GameEngine.cpp[m
+[1mnew file mode 100644[m
+[1mindex 0000000..338813c[m
+[1m--- /dev/null[m
+[1m+++ b/GameEngine.cpp[m
+[36m@@ -0,0 +1,356 @@[m
+[32m+[m[32m#include "GameEngine.h"[m
+[32m+[m[32m//Private Funcions[m
+[32m+[m
+[32m+[m[32mvoid GameEngine::initVariables()[m
+[32m+[m[32m{[m
+[32m+[m[32m    this->window = nullptr;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid GameEngine::initWindow()[m
+[32m+[m[32m{[m
+[32m+[m[32m    this->videomode.height = 1080;[m
+[32m+[m[32m    this->videomode.width = 1920;[m
+[32m+[m[32m    this->window = new sf::RenderWindow(this->videomode, "Test_Game");[m
+[32m+[m[32m    this->window->setFramerateLimit(120);[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid GameEngine::initButtons()[m
+[32m+[m[32m{[m
+[32m+[m[32m    sf::Vector2f buttonSize(75, 75);[m
+[32m+[m[32m    Buttons.push_back(new Button(sf::Vector2f(100, 100), buttonSize, sf::Color::Black)); //Button player 1[m
+[32m+[m[32m    Buttons.push_back(new Button(sf::Vector2f(100, 200), buttonSize, sf::Color::Black)); //Button player 2[m
+[32m+[m[32m    Buttons.push_back(new Button(sf::Vector2f(1500, 100), buttonSize, sf::Color::Black)); //Button enemy 1[m
+[32m+[m[32m    Buttons.push_back(new Button(sf::Vector2f(1500, 200), buttonSize, sf::Color::Black)); //Button enemy 2[m
+[32m+[m[32m    Buttons.push_back(new Button(sf::Vector2f(100, 300), buttonSize, sf::Color::Black)); //Button player 3[m
+[32m+[m[32m    Buttons.push_back(new Button(sf::Vector2f(1500, 300), buttonSize, sf::Color::Black)); //Button enemy 3[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid GameEngine::consoleLog()[m
+[32m+[m[32m{[m
+[32m+[m[32m   // std::cout << 1 / elapsed.asSeconds() << " FPS " << std::endl;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m
+[32m+[m[32m//Constructor, Destructor[m
+[32m+[m
+[32m+[m[32mGameEngine::GameEngine()[m
+[32m+[m[32m{[m
+[32m+[m[32m    this->initVariables();[m
+[32m+[m[32m    this->initWindow();[m
+[32m+[m[32m    this->initButtons();[m
+[32m+[m
+[32m+[m[32m    allySpawnPoint = sf::Vector2f(100, this->videomode.height - 200);[m
+[32m+[m[32m    enemySpawnPoint = sf::Vector2f(this->videomode.width - 100, this->videomode.height - 200);[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mGameEngine::~GameEngine()[m
+[32m+[m[32m{[m
+[32m+[m[32m    delete this->window;[m
+[32m+[m[32m    //Deletes all units spawned[m
+[32m+[m[32m    for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        delete *it;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    //Deletes all buttons spawned[m
+[32m+[m[32m    for (auto it = Buttons.begin(); it != Buttons.end(); ++it)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        delete* it;[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m//Accesors[m
+[32m+[m
+[32m+[m[32mconst bool GameEngine::running() const[m
+[32m+[m[32m{[m
+[32m+[m[32m    return this->window->isOpen();[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m//Functions[m
+[32m+[m
+[32m+[m[32mvoid GameEngine::update()[m
+[32m+[m[32m{[m
+[32m+[m[32m    //Resets frame timer[m
+[32m+[m[32m    elapsed = clock.restart();[m
+[32m+[m
+[32m+[m[32m    //Poll events[m
+[32m+[m[32m    this->pollEvents();[m
+[32m+[m
+[32m+[m[32m    //Update logic for all units spawned[m
+[32m+[m
+[32m+[m[32m    //Collision beetwen units. Units have two options, move or attack[m
+[32m+[m[32m    for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        if (*it != nullptr)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            (*it)->update(elapsed);[m
+[32m+[m[32m            if (!isColliding(*it))[m
+[32m+[m[32m            {[m
+[32m+[m[32m                (*it)->move(elapsed);[m
+[32m+[m[32m            }[m
+[32m+[m[32m            else[m
+[32m+[m[32m            {[m
+[32m+[m[32m                tryAttack(*it);[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m[41m [m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    //Writes in console[m
+[32m+[m[32m    this->consoleLog();[m
+[32m+[m
+[32m+[m[32m    //Removes dead units[m
+[32m+[m[32m    for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        if (*it != nullptr)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            if ((*it)->health() <= 0)[m
+[32m+[m[32m            {[m
+[32m+[m[32m                kill(*it);[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m[32m    //Updates Buttons logic[m
+[32m+[m[32m    for (auto it = Buttons.begin(); it != Buttons.end(); ++it)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        if (*it != nullptr)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            (*it)->update();[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m
+[32m+[m[32mvoid GameEngine::pollEvents()[m
+[32m+[m[32m{[m
+[32m+[m[32m    //Event polling[m
+[32m+[m[32m    while (this->window->pollEvent(this->event))[m
+[32m+[m[32m    {[m
+[32m+[m[32m        if (this->event.type == sf::Event::Closed)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            this->window->close();[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        if (this->event.type == sf::Event::KeyPressed)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            if (event.key.code == sf::Keyboard::Escape)[m
+[32m+[m[32m            {[m
+[32m+[m[32m                this->window->close();[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        //Checks if buttons are clicked[m
+[32m+[m[32m        pollButtons();[m
+[32m+[m
+[32m+[m[32m       //Checks if units are clicked[m
+[32m+[m[32m        for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            if (*it != nullptr)[m
+[32m+[m[32m            {[m
+[32m+[m[32m                if ((*it)->isClicked())[m
+[32m+[m[32m                {[m
+[32m+[m[32m                    (*it)->takeDamage(1000);[m
+[32m+[m[32m                }[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid GameEngine::pollButtons()[m
+[32m+[m[32m{[m
+[32m+[m[32m    float const buttonCDCONST = 0.75;[m
+[32m+[m[41m    [m
+[32m+[m[32m    if (Buttons.at(0)->isClicked() && isSpawnPointFree(allySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= buttonCDCONST)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        SpawnedUnits.push_back(new Unit("DUMMY", allySpawnPoint, true));[m
+[32m+[m[32m        std::cout << "0 Button clicked" << std::endl;[m
+[32m+[m[32m        buttonCD.restart();[m
+[32m+[m[32m    }[m
+[32m+[m[32m    if (Buttons.at(1)->isClicked() && isSpawnPointFree(allySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= buttonCDCONST)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        SpawnedUnits.push_back(new Unit("DUMMY_2", allySpawnPoint, true));[m
+[32m+[m[32m        std::cout << "1 Button clicked" << std::endl;[m
+[32m+[m[32m        buttonCD.restart();[m
+[32m+[m[32m    }[m
+[32m+[m[32m    if (Buttons.at(2)->isClicked() && isSpawnPointFree(enemySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= buttonCDCONST)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        SpawnedUnits.push_back(new Unit("DUMMY", enemySpawnPoint, false));[m
+[32m+[m[32m        std::cout << "2 Button clicked" << std::endl;[m
+[32m+[m[32m        buttonCD.restart();[m
+[32m+[m[32m    }[m
+[32m+[m[32m    if (Buttons.at(3)->isClicked() && isSpawnPointFree(enemySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= buttonCDCONST)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        SpawnedUnits.push_back(new Unit("DUMMY_2", enemySpawnPoint, false));[m
+[32m+[m[32m        std::cout << "3 Button clicked" << std::endl;[m
+[32m+[m[32m        buttonCD.restart();[m
+[32m+[m[32m    }[m
+[32m+[m[32m    if (Buttons.at(4)->isClicked() && isSpawnPointFree(allySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= buttonCDCONST)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        SpawnedUnits.push_back(new Unit("Archer_DUMMY", allySpawnPoint, true));[m
+[32m+[m[32m        std::cout << "3 Button clicked" << std::endl;[m
+[32m+[m[32m        buttonCD.restart();[m
+[32m+[m[32m    }[m
+[32m+[m[32m    if (Buttons.at(5)->isClicked() && isSpawnPointFree(enemySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= buttonCDCONST)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        SpawnedUnits.push_back(new Unit("Archer_DUMMY", enemySpawnPoint, false));[m
+[32m+[m[32m        std::cout << "3 Button clicked" << std::endl;[m
+[32m+[m[32m        buttonCD.restart();[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid GameEngine::render()[m
+[32m+[m[32m{[m
+[32m+[m[32m    /*[m
+[32m+[m[32m    Renders the game objects[m
+[32m+[m[32m    -clear old frame[m
+[32m+[m[32m    -render objects[m
+[32m+[m[32m    -display frame in window[m
+[32m+[m[32m    */[m
+[32m+[m
+[32m+[m[32m    //---Clear old frame[m
+[32m+[m[32m    this->window->clear(sf::Color(110, 110, 110, 255));[m
+[32m+[m
+[32m+[m[32m    //---Draw objects in game[m
+[32m+[m[41m    [m
+[32m+[m[32m    //Draw all unit spawned[m
+[32m+[m[32m    for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        if (*it != nullptr)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            (*it)->Unit::render(this->window);[m
+[32m+[m[32m        }[m[41m [m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    //Draws all buttons[m[41m [m
+[32m+[m[32m    for (auto it = Buttons.begin(); it != Buttons.end(); ++it)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        (*it)->Button::render(this->window);[m
+[32m+[m[32m    }[m
+[32m+[m[41m        [m
+[32m+[m[32m    //---Display frame in window[m
+[32m+[m[32m    this->window->display();[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid GameEngine::kill(Unit*& unit)[m
+[32m+[m[32m{[m
+[32m+[m[32m    delete unit;[m
+[32m+[m[32m    unit = nullptr;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mbool GameEngine::isColliding(Unit* unit)[m
+[32m+[m[32m{[m
+[32m+[m[32m    if (unit != nullptr)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        float uLeftBumper = unit->getBumperHitbox().left;[m
+[32m+[m[32m        float uRightBumper = unit->getBumperHitbox().left + unit->getBumperHitbox().width;[m
+[32m+[m
+[32m+[m[32m        for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            if (*it != nullptr)[m
+[32m+[m[32m            {[m
+[32m+[m[32m                float iLeftBody = (*it)->getHitbox().left;[m
+[32m+[m[32m                float iRightBody = (*it)->getHitbox().left + (*it)->getHitbox().width;[m
+[32m+[m[32m                //Checks if *it isnt dead unit or same unit as argument[m
+[32m+[m[32m                if ((*it)->healthbar && (*it) != unit)[m
+[32m+[m[32m                {[m
+[32m+[m[32m                    //If unit is friendly (facing right)[m
+[32m+[m[32m                    if (unit->friendly)[m
+[32m+[m[32m                    {[m
+[32m+[m[32m                        if (iLeftBody >= uLeftBumper && iLeftBody <= uRightBumper)[m
+[32m+[m[32m                        {[m
+[32m+[m[32m                            return true;[m
+[32m+[m[32m                        }[m
+[32m+[m[32m                    }[m
+[32m+[m[32m                    //If unit is hostile (facing left)[m
+[32m+[m[32m                    if (!(unit->friendly))[m
+[32m+[m[32m                    {[m
+[32m+[m[32m                        if (iRightBody >= uLeftBumper && iRightBody <= uRightBumper)[m
+[32m+[m[32m                        {[m
+[32m+[m[32m                            return true;[m
+[32m+[m[32m                        }[m
+[32m+[m[32m                    }[m
+[32m+[m[32m                }[m
+[32m+[m[32m            }[m
+[32m+[m[41m          [m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m[32m    return false;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mUnit* GameEngine::isCollidingWith(Unit* unit)[m
+[32m+[m[32m{[m
+[32m+[m[32m    if (unit != nullptr)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        float uLeftBumper = unit->getBumperHitbox().left;[m
+[32m+[m[32m        float uRightBumper = unit->getBumperHitbox().left + unit->getBumperHitbox().width;[m
+[32m+[m
+[32m+[m[32m        for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            if (*it != nullptr)[m
+[32m+[m[32m            {[m
+[32m+[m[32m                float iLeftBody = (*it)->getHitbox().left;[m
+[32m+[m[32m                float iRightBody = (*it)->getHitbox().left + (*it)->getHitbox().width;[m
+[32m+[m[32m                //Checks if *it isnt dead unit or same unit as argument[m
+[32m+[m[32m                if ((*it)->healthbar && (*it) != unit)[m
+[32m+[m[32m                {[m
+[32m+[m[32m                    //If unit is friendly (facing right)[m
+[32m+[m[32m                    if (unit->friendly)[m
+[32m+[m[32m                    {[m
+[32m+[m[32m                        if (iLeftBody >= uLeftBumper && iLeftBody <= uRightBumper)[m
+[32m+[m[32m                        {[m
+[32m+[m[32m                            return *it;[m
+[32m+[m[32m                        }[m
+[32m+[m[32m                    }[m
+[32m+[m[32m                    //If unit is hostile (facing left)[m
+[32m+[m[32m                    if (!(unit->friendly))[m
+[32m+[m[32m                    {[m
+[32m+[m[32m                        if (iRightBody >= uLeftBumper && iRightBody <= uRightBumper)[m
+[32m+[m[32m                        {[m
+[32m+[m[32m                            return *it;[m
+[32m+[m[32m                        }[m
+[32m+[m[32m                    }[m
+[32m+[m[32m                }[m
+[32m+[m[32m            }[m
+[32m+[m[41m          [m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m[41m  [m
+[32m+[m[32m    return nullptr;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mbool GameEngine::isSpawnPointFree(sf::Vector2f spawnPoint)[m
+[32m+[m[32m{[m
+[32m+[m[32m    for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        if (*it != nullptr)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            float left = (*it)->getHitbox().left;[m
+[32m+[m[32m            float right = (*it)->getHitbox().left + (*it)->getHitbox().width;[m
+[32m+[m[32m            float xPoint = spawnPoint.x;[m
+[32m+[m[32m            if ((*it)->friendly)[m
+[32m+[m[32m            {[m
+[32m+[m[32m                xPoint += (*it)->getHitbox().width;[m
+[32m+[m[32m            }[m
+[32m+[m[41m            [m
+[32m+[m[32m            if (right >= xPoint && left <= xPoint)[m
+[32m+[m[32m            {[m
+[32m+[m[32m                std::cout << "Spawnpoint is occupied" << std::endl;[m
+[32m+[m[32m                return false;[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m[32m    return true;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid GameEngine::tryAttack(Unit* unit)[m
+[32m+[m[32m{[m
+[32m+[m[32m    if (unit != nullptr)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        if (isCollidingWith(unit) != nullptr && isCollidingWith(unit)->friendly != unit->friendly)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            unit->attack(isCollidingWith(unit));[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m
+[32m+[m
+[1mdiff --git a/GameEngine.h b/GameEngine.h[m
+[1mnew file mode 100644[m
+[1mindex 0000000..a0799ce[m
+[1m--- /dev/null[m
+[1m+++ b/GameEngine.h[m
+[36m@@ -0,0 +1,102 @@[m
+[32m+[m[32m#pragma once[m
+[32m+[m[32m#include <SFML/System.hpp>[m
+[32m+[m[32m#include <SFML/Window.hpp>[m
+[32m+[m[32m#include <SFML/Graphics.hpp>[m
+[32m+[m[32m#include <iostream>[m
+[32m+[m[32m#include "Unit.h"[m
+[32m+[m[32m#include "Button.h"[m
+[32m+[m[32m#include <vector>[m
+[32m+[m
+[32m+[m[32m// Game Engine[m
+[32m+[m
+[32m+[m
+[32m+[m[32mclass GameEngine[m
+[32m+[m[32m{[m
+[32m+[m[32mprivate:[m
+[32m+[m	[32m//Dynamic window[m
+[32m+[m	[32msf::RenderWindow* window;[m[41m	[m
+[32m+[m	[32m//Window preferences[m
+[32m+[m	[32msf::VideoMode videomode;[m[41m		[m
+[32m+[m	[32m//Event handling[m
+[32m+[m	[32msf::Event event;[m[41m				[m
+[32m+[m	[32m//Time measuring[m
+[32m+[m	[32msf::Clock clock;[m[41m [m
+[32m+[m	[32msf::Time elapsed;[m
+[32m+[m	[32msf::Clock buttonCD;[m
+[32m+[m	[32m//Spawn points for units[m
+[32m+[m	[32msf::Vector2f allySpawnPoint;[m
+[32m+[m	[32msf::Vector2f enemySpawnPoint;[m
+[32m+[m
+[32m+[m	[32m//Buttons[m
+[32m+[m	[32mstd::vector<Button*> Buttons;[m
+[32m+[m[41m	[m
+[32m+[m	[32m//Units[m
+[32m+[m	[32mstd::vector<Unit*> SpawnedUnits;[m
+[32m+[m
+[32m+[m	[32m//Private Funcions[m
+[32m+[m[41m	[m
+[32m+[m	[32m//Initialize Game variables[m
+[32m+[m	[32mvoid initVariables();[m[41m	[m
+[32m+[m	[32m//Initialize Window[m
+[32m+[m	[32mvoid initWindow();[m[41m	[m
+[32m+[m	[32m//Initialize Buttons[m
+[32m+[m	[32mvoid initButtons();[m
+[32m+[m	[32m//Console Log[m
+[32m+[m	[32mvoid consoleLog();[m
+[32m+[m
+[32m+[m[32mpublic:[m
+[32m+[m
+[32m+[m	[32m//Constructor[m
+[32m+[m	[32mGameEngine();[m
+[32m+[m
+[32m+[m	[32m//Destructor[m
+[32m+[m	[32mvirtual ~GameEngine();[m
+[32m+[m
+[32m+[m	[32m//Accesors[m
+[32m+[m
+[32m+[m	[32m//Check if the game is running[m
+[32m+[m	[32mconst bool running() const;[m[41m [m
+[32m+[m
+[32m+[m	[32m//[m
+[32m+[m[41m	[m
+[32m+[m	[32m//Functions[m
+[32m+[m
+[32m+[m	[32m//Poll events[m
+[32m+[m	[32mvoid pollEvents();[m[41m	[m
+[32m+[m
+[32m+[m	[32m//Check if any button is clicked[m
+[32m+[m	[32mvoid pollButtons();[m
+[32m+[m
+[32m+[m	[32m//Update game logic[m
+[32m+[m	[32mvoid update();[m[41m		[m
+[32m+[m
+[32m+[m	[32m//Renders the game objects[m
+[32m+[m	[32mvoid render();[m[41m				[m
+[32m+[m
+[32m+[m	[32m//kills a unit[m
+[32m+[m	[32mvoid kill(Unit*& unit);[m
+[32m+[m
+[32m+[m	[32m//Returns true if there is collision and unit it is colliding with[m
+[32m+[m	[32mbool isColliding(Unit* unit);[m
+[32m+[m
+[32m+[m	[32m//Returns what Unit is colliding with[m
+[32m+[m	[32mUnit* isCollidingWith(Unit* unit);[m
+[32m+[m
+[32m+[m	[32m//Checks if spawnpoint is free[m
+[32m+[m	[32mbool isSpawnPointFree(sf::Vector2f spawnPoint);[m
+[32m+[m
+[32m+[m	[32m//Returns true if there is enemy in range[m
+[32m+[m	[32mbool isEnemyInRange(Unit* unit);[m
+[32m+[m
+[32m+[m	[32m//Returns true if there is ally in range[m
+[32m+[m	[32mbool isAllyInRange(Unit* unit);[m
+[32m+[m
+[32m+[m	[32m//Returns enemy unit that is closest in range[m
+[32m+[m	[32mUnit* closestEnemyInRange(Unit* unit);[m
+[32m+[m[41m	[m
+[32m+[m
+[32m+[m	[32m//FIGHTING:[m
+[32m+[m	[32m//Unit attempt attack on another unit that is colliding with[m
+[32m+[m	[32mvoid tryAttack(Unit* unit);[m
+[32m+[m[32m};[m
+[32m+[m
+[1mdiff --git a/Healthbar.cpp b/Healthbar.cpp[m
+[1mnew file mode 100644[m
+[1mindex 0000000..b73474e[m
+[1m--- /dev/null[m
+[1m+++ b/Healthbar.cpp[m
+[36m@@ -0,0 +1,28 @@[m
+[32m+[m[32m#include "Healthbar.h"[m
+[32m+[m[32m#include "Unit.h"[m
+[32m+[m
+[32m+[m
+[32m+[m[32mHealthbar::Healthbar(const Unit& u) : unit(u)[m
+[32m+[m[32m{[m
+[32m+[m[32m    background.setSize(sf::Vector2f(unit.getBody().getSize().x, 10));[m
+[32m+[m[32m    background.setFillColor(sf::Color::Red);[m
+[32m+[m[32m    background.setPosition(sf::Vector2f(unit.getBody().getPosition().x, unit.getBody().getPosition().y - 25));[m
+[32m+[m[32m    background.setOutlineThickness(2.2);[m
+[32m+[m[32m    background.setOutlineColor(sf::Color::Black);[m
+[32m+[m[32m    this->setSize(background.getSize());[m
+[32m+[m[32m    this->setFillColor(sf::Color::Green);[m
+[32m+[m[32m    this->setPosition(background.getPosition());[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m
+[32m+[m[32mvoid Healthbar::update(const Unit* unit)[m
+[32m+[m[32m{[m
+[32m+[m[32m    this->setSize(sf::Vector2f(unit->health() / unit->maxHP() * background.getSize().x, background.getSize().y));[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid Healthbar::render(sf::RenderWindow* window, const Unit* unit)[m
+[32m+[m[32m{[m
+[32m+[m[32m        window->draw(this->background);[m
+[32m+[m[32m        window->draw(*this);[m
+[32m+[m[41m  [m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/Healthbar.h b/Healthbar.h[m
+[1mnew file mode 100644[m
+[1mindex 0000000..22d27cb[m
+[1m--- /dev/null[m
+[1m+++ b/Healthbar.h[m
+[36m@@ -0,0 +1,24 @@[m
+[32m+[m[32m#pragma once[m
+[32m+[m[32m#ifndef HEALTHBAR_H[m
+[32m+[m[32m#define HEALTHBAR_H[m
+[32m+[m
+[32m+[m[32m#include <SFML/System.hpp>[m
+[32m+[m[32m#include <SFML/Window.hpp>[m
+[32m+[m[32m#include <SFML/Graphics.hpp>[m
+[32m+[m
+[32m+[m[32mclass Unit; // forward declaration[m
+[32m+[m
+[32m+[m[32mclass Healthbar : public sf::RectangleShape[m
+[32m+[m[32m{[m
+[32m+[m[32mprivate:[m
+[32m+[m[41m   [m
+[32m+[m[32m    const Unit& unit; // referencja do klasy Unit[m
+[32m+[m
+[32m+[m[32mpublic:[m
+[32m+[m[32m    sf::RectangleShape background;[m
+[32m+[m[32m    Healthbar(const Unit& u);[m
+[32m+[m[32m    void update(const Unit* unit);[m
+[32m+[m[32m    void render(sf::RenderWindow* window, const Unit* unit);[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32m#endif // HEALTHBAR_H[m
+\ No newline at end of file[m
+[1mdiff --git a/LoadingBar.cpp b/LoadingBar.cpp[m
+[1mnew file mode 100644[m
+[1mindex 0000000..0f2f66e[m
+[1m--- /dev/null[m
+[1m+++ b/LoadingBar.cpp[m
+[36m@@ -0,0 +1,36 @@[m
+[32m+[m[32m#include "LoadingBar.h"[m
+[32m+[m
+[32m+[m[32mLoadingBar::LoadingBar()[m
+[32m+[m[32m{[m
+[32m+[m[32m    background.setSize(sf::Vector2f(0, 0));[m
+[32m+[m[32m    background.setFillColor(sf::Color::Black);[m
+[32m+[m[32m    background.setPosition(0, 0);[m
+[32m+[m[32m    background.setOutlineThickness(2.2);[m
+[32m+[m[32m    background.setOutlineColor(sf::Color::Black);[m
+[32m+[m[32m    this->setSize(background.getSize());[m
+[32m+[m[32m    this->setFillColor(sf::Color::Green);[m
+[32m+[m[32m    this->setPosition(background.getPosition());[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mLoadingBar::LoadingBar(sf::Vector2f size, sf::Vector2f position)[m
+[32m+[m[32m{[m
+[32m+[m[32m    background.setSize(size);[m
+[32m+[m[32m    background.setFillColor(sf::Color::Black);[m
+[32m+[m[32m    background.setPosition(position);[m
+[32m+[m[32m    background.setOutlineThickness(2.2);[m
+[32m+[m[32m    background.setOutlineColor(sf::Color::Black);[m
+[32m+[m[32m    this->setSize(background.getSize());[m
+[32m+[m[32m    this->setFillColor(sf::Color::Green);[m
+[32m+[m[32m    this->setPosition(background.getPosition());[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid LoadingBar::update(float nominator, float denominator, sf::Time elapsed)[m
+[32m+[m[32m{[m
+[32m+[m[32m    this->setSize(sf::Vector2f(nominator * elapsed.asSeconds() / denominator, background.getSize().y));[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid LoadingBar::render(sf::RenderWindow* window)[m
+[32m+[m[32m{[m
+[32m+[m[32m    window->draw(this->background);[m
+[32m+[m[32m    window->draw(*this);[m
+[32m+[m[32m}[m
+[1mdiff --git a/LoadingBar.h b/LoadingBar.h[m
+[1mnew file mode 100644[m
+[1mindex 0000000..0dd8084[m
+[1m--- /dev/null[m
+[1m+++ b/LoadingBar.h[m
+[36m@@ -0,0 +1,14 @@[m
+[32m+[m[32m#pragma once[m
+[32m+[m[32m#include "Healthbar.h"[m
+[32m+[m[32mclass LoadingBar : public sf::RectangleShape[m
+[32m+[m[32m{[m
+[32m+[m[32mprivate:[m
+[32m+[m
+[32m+[m[32mpublic:[m
+[32m+[m	[32msf::RectangleShape background;[m
+[32m+[m	[32mLoadingBar();[m
+[32m+[m	[32mLoadingBar(sf::Vector2f size, sf::Vector2f position);[m
+[32m+[m	[32mvoid update(float nominator, float denominator, sf::Time elapsed);[m
+[32m+[m	[32mvoid render(sf::RenderWindow* window);[m
+[32m+[m[32m};[m
+[32m+[m
+[1mdiff --git a/Main.cpp b/Main.cpp[m
+[1mnew file mode 100644[m
+[1mindex 0000000..bf48e27[m
+[1m--- /dev/null[m
+[1m+++ b/Main.cpp[m
+[36m@@ -0,0 +1,45 @@[m
+[32m+[m[32m﻿#include <SFML/Window.hpp>[m
+[32m+[m[32m#include <SFML/Graphics.hpp>[m
+[32m+[m[32m#include <SFML/System.hpp>[m
+[32m+[m[32m#include "GameEngine.h"[m
+[32m+[m
+[32m+[m[32m//Init Game engine[m
+[32m+[m[32mGameEngine game;[m
+[32m+[m
+[32m+[m[32mint main()[m
+[32m+[m[32m{[m
+[32m+[m[32m    std::cout << "V0.4.2 is working" << std::endl;[m
+[32m+[m[32m    //Game loop[m
+[32m+[m[32m    while (game.running())[m
+[32m+[m[32m    {[m
+[32m+[m
+[32m+[m[32m        //Update game logic[m
+[32m+[m[32m        game.update();[m
+[32m+[m[32m        //Render game graphic[m
+[32m+[m[32m        game.render();[m
+[32m+[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    return 0;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[1mdiff --git a/Unit.cpp b/Unit.cpp[m
+[1mnew file mode 100644[m
+[1mindex 0000000..916a171[m
+[1m--- /dev/null[m
+[1m+++ b/Unit.cpp[m
+[36m@@ -0,0 +1,264 @@[m
+[32m+[m[32m﻿#include "Unit.h"[m
+[32m+[m[32m#include "Unit.h"[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[32mvoid Unit::initVariables()[m
+[32m+[m[32m{[m
+[32m+[m[32m    this->movementSpeed = NULL;[m
+[32m+[m[32m    this->currentHealth = NULL;[m
+[32m+[m[32m    this->maxHealth = NULL;[m
+[32m+[m[32m    this->AtkSpd = NULL;[m
+[32m+[m[32m    this->Atk = NULL;[m
+[32m+[m[32m    this->range = NULL;[m
+[32m+[m[32m    this->healthbar = false;[m
+[32m+[m[32m    this->friendly = true;[m
+[32m+[m[32m    this->healthbarBODY = nullptr;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid Unit::initBumper(bool friendly)[m
+[32m+[m[32m{[m
+[32m+[m[32m    float constY = 20;[m
+[32m+[m[32m    bumperBody.setSize(sf::Vector2f(40, this->body.getSize().y + constY));[m
+[32m+[m[32m    bumperBody.setFillColor(sf::Color::Transparent);[m
+[32m+[m[32m    if (friendly)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        bumperBody.setPosition(sf::Vector2f(body.getPosition().x + body.getSize().x - bumperBody.getSize().x / 2, body.getPosition().y - constY / 2));[m
+[32m+[m[32m    }[m
+[32m+[m[32m    if (!friendly)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        bumperBody.setPosition(sf::Vector2f(body.getPosition().x - bumperBody.getSize().x / 2, body.getPosition().y - constY / 2));[m
+[32m+[m[32m    }[m
+[32m+[m[32m    bumperBody.setOutlineThickness(1.25);[m
+[32m+[m[32m    bumperBody.setOutlineColor(sf::Color(255, 169, 38));[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid Unit::initRangeBody(float range, bool friendly)[m
+[32m+[m[32m{[m
+[32m+[m[32m    float constY = 20;[m
+[32m+[m[32m    rangeBody.setSize(sf::Vector2f(range, this->body.getSize().y + constY));[m
+[32m+[m[32m    rangeBody.setFillColor(sf::Color::Transparent);[m
+[32m+[m[32m    if (friendly)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        rangeBody.setPosition(sf::Vector2f(body.getPosition().x + body.getSize().x , body.getPosition().y - constY / 2));[m
+[32m+[m[32m    }[m
+[32m+[m[32m    if (!friendly)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        rangeBody.setPosition(sf::Vector2f(body.getPosition().x - range, body.getPosition().y - constY / 2));[m
+[32m+[m[32m    }[m
+[32m+[m[32m    rangeBody.setOutlineThickness(1.25);[m
+[32m+[m[32m    rangeBody.setOutlineColor(sf::Color(255, 169, 60));[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mUnit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)[m
+[32m+[m[32m{[m
+[32m+[m[32m    initVariables();[m
+[32m+[m
+[32m+[m[32m    //Unit type[m
+[32m+[m[32m    if (unitType == "DUMMY")[m
+[32m+[m[32m    {[m[41m   [m
+[32m+[m[32m        //Body[m
+[32m+[m[32m        body.setSize(sf::Vector2f(50, 100));[m
+[32m+[m[32m        body.setPosition(position);[m
+[32m+[m[32m        body.setFillColor(sf::Color(100, 50, 250));[m
+[32m+[m[32m        hitbox = body.getGlobalBounds();[m
+[32m+[m[32m        //Init Stats[m
+[32m+[m[32m        movementSpeed = 100;[m
+[32m+[m[32m        maxHealth = 3000;[m
+[32m+[m[32m        Atk = 200;[m
+[32m+[m[32m        AtkSpd = 1.2;[m
+[32m+[m[32m        range = 0;[m
+[32m+[m[32m        //[m
+[32m+[m[32m        this->healthbar = true;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    if (unitType == "DUMMY_2")[m
+[32m+[m[32m    {[m
+[32m+[m[32m        //Body[m
+[32m+[m[32m        body.setSize(sf::Vector2f(100, 120));[m
+[32m+[m[32m        body.setPosition(position);[m
+[32m+[m[32m        body.setFillColor(sf::Color(100, 50, 250));[m
+[32m+[m[32m        hitbox = body.getGlobalBounds();[m
+[32m+[m[32m        //Init Stats[m
+[32m+[m[32m        movementSpeed = 40;[m
+[32m+[m[32m        maxHealth = 5000;[m
+[32m+[m[32m        Atk = 750;[m
+[32m+[m[32m        AtkSpd = 0.4;[m
+[32m+[m[32m        range = 0;[m
+[32m+[m[32m        //[m
+[32m+[m[32m        this->healthbar = true;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    if (unitType == "Archer_DUMMY")[m
+[32m+[m[32m    {[m
+[32m+[m[32m        //Body[m
+[32m+[m[32m        body.setSize(sf::Vector2f(50, 75));[m
+[32m+[m[32m        body.setPosition(position);[m
+[32m+[m[32m        body.setFillColor(sf::Color(100, 50, 250));[m
+[32m+[m[32m        hitbox = body.getGlobalBounds();[m
+[32m+[m[32m        //Init Stats[m
+[32m+[m[32m        movementSpeed = 100;[m
+[32m+[m[32m        maxHealth = 1200;[m
+[32m+[m[32m        Atk = 250;[m
+[32m+[m[32m        AtkSpd = 1;[m
+[32m+[m[32m        range = 500;[m
+[32m+[m[32m        //[m
+[32m+[m[32m        this->healthbar = true;[m
+[32m+[m[32m    }[m
+[32m+[m[41m   [m
+[32m+[m[32m    currentHealth = maxHealth;[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    //Additional settings:[m
+[32m+[m[41m    [m
+[32m+[m[32m    //Healthbar[m
+[32m+[m[32m    healthbarBODY = new Healthbar(*this);[m
+[32m+[m
+[32m+[m[32m    //Bumper[m
+[32m+[m[32m    initBumper(friendly);[m
+[32m+[m
+[32m+[m[32m    //RangeBody[m
+[32m+[m[32m    initRangeBody(range, friendly);[m
+[32m+[m[41m    [m
+[32m+[m[32m    //Occupation[m
+[32m+[m[32m    if (!friendly)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        movementSpeed *= -1;[m
+[32m+[m[32m        this->friendly = false;[m
+[32m+[m[32m        body.setFillColor(sf::Color::Red);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mUnit::~Unit()[m
+[32m+[m[32m{[m
+[32m+[m[32m    delete healthbarBODY;[m
+[32m+[m[32m    healthbarBODY = nullptr;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m
+[32m+[m[32mvoid Unit::render(sf::RenderWindow* window)[m
+[32m+[m[32m{[m
+[32m+[m[32m    try {[m
+[32m+[m[32m        if (this == nullptr) {[m
+[32m+[m[32m            return;[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        window->draw(this->body);[m
+[32m+[m
+[32m+[m[32m        if (this->healthbarBODY != nullptr)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            this->healthbarBODY->render(window, this);[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        window->draw(this->bumperBody);[m
+[32m+[m[32m        if (range > 0)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            window->draw(this->rangeBody);[m
+[32m+[m[32m        }[m
+[32m+[m[41m       [m
+[32m+[m[32m    }[m
+[32m+[m[32m    catch (std::exception& e) {[m
+[32m+[m[32m        std::cerr << "Error rendering unit: " << e.what() << std::endl;[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid Unit::move(sf::Time elapsed)[m
+[32m+[m[32m{[m
+[32m+[m[32m    body.move(this->movementSpeed * elapsed.asSeconds(), 0);[m
+[32m+[m[32m    bumperBody.move(this->movementSpeed * elapsed.asSeconds(), 0);[m[41m [m
+[32m+[m[32m    rangeBody.move(this->movementSpeed * elapsed.asSeconds(), 0);[m
+[32m+[m[32m    if (healthbarBODY != nullptr)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        healthbarBODY->move(this->movementSpeed * elapsed.asSeconds(), 0);[m
+[32m+[m[32m        healthbarBODY->background.move(this->movementSpeed * elapsed.asSeconds(), 0);[m
+[32m+[m[32m    }[m
+[32m+[m[41m   [m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mfloat const Unit::health() const[m
+[32m+[m[32m{[m
+[32m+[m[32m    return currentHealth;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mfloat const Unit::atk() const[m
+[32m+[m[32m{[m
+[32m+[m[32m    return Atk;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mfloat const Unit::atkSpd() const[m
+[32m+[m[32m{[m
+[32m+[m[32m    return AtkSpd;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32msf::RectangleShape const Unit::getBody() const[m
+[32m+[m[32m{[m
+[32m+[m[32m    return body;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32msf::FloatRect const Unit::getHitbox() const[m
+[32m+[m[32m{[m
+[32m+[m[32m    if (this != nullptr)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        return hitbox;[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32msf::FloatRect const Unit::getBumperHitbox() const[m
+[32m+[m[32m{[m
+[32m+[m[32m    return bumperHitbox;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mbool Unit::isClicked()[m
+[32m+[m[32m{[m
+[32m+[m[32m    float left = hitbox.left;[m
+[32m+[m[32m    float right = hitbox.left + hitbox.width;[m
+[32m+[m[32m    float top = hitbox.top;[m
+[32m+[m[32m    float bottom = hitbox.top + hitbox.height;[m
+[32m+[m
+[32m+[m[32m    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) &&[m
+[32m+[m[32m        sf::Mouse::getPosition().x >= left && sf::Mouse::getPosition().x <= right &&[m
+[32m+[m[32m        sf::Mouse::getPosition().y >= top && sf::Mouse::getPosition().y <= bottom)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        return true;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    return false;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid Unit::takeDamage(float amount)[m
+[32m+[m[32m{[m
+[32m+[m[32m    this->currentHealth -= amount;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid Unit::attack(Unit* target)[m
+[32m+[m[32m{[m
+[32m+[m[32m    if (atkCD.getElapsedTime().asMilliseconds() >= 1000.0f / this->AtkSpd)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        target->takeDamage(this->Atk);[m
+[32m+[m[32m        this->atkCD.restart();[m
+[32m+[m[32m    }[m
+[32m+[m[32m   // else[m
+[32m+[m[32m   //{[m
+[32m+[m[32m   //    std::cout << atkCD.getElapsedTime().asMilliseconds() << " / " << 1000.0f / this->AtkSpd << std::endl;[m
+[32m+[m[32m   //}[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mfloat const Unit::maxHP() const[m
+[32m+[m[32m{[m
+[32m+[m[32m    return maxHealth;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mvoid Unit::update(sf::Time elapsed)[m
+[32m+[m[32m{[m
+[32m+[m[32m    hitbox = body.getGlobalBounds();[m
+[32m+[m[32m    bumperHitbox = bumperBody.getGlobalBounds();[m
+[32m+[m[32m    if (range > 0)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        rangeHitbox = rangeBody.getGlobalBounds();[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    if (healthbarBODY != nullptr)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        healthbarBODY->update(this);[m
+[32m+[m[32m    }[m
+[32m+[m[41m   [m
+[32m+[m[32m}[m
+[1mdiff --git a/Unit.h b/Unit.h[m
+[1mnew file mode 100644[m
+[1mindex 0000000..537bc98[m
+[1m--- /dev/null[m
+[1m+++ b/Unit.h[m
+[36m@@ -0,0 +1,126 @@[m
+[32m+[m[32m#pragma once[m
+[32m+[m
+[32m+[m[32m#include <SFML/System.hpp>[m
+[32m+[m[32m#include <SFML/Window.hpp>[m
+[32m+[m[32m#include <SFML/Graphics.hpp>[m
+[32m+[m[32m#include <iostream>[m
+[32m+[m[32m#include "Healthbar.h"[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[32m//Class that manage unit logic[m
+[32m+[m
+[32m+[m[32mclass Unit[m
+[32m+[m[32m{[m
+[32m+[m[32mprotected:[m
+[32m+[m	[32m//Unit "body"[m
+[32m+[m	[32msf::RectangleShape body;[m
+[32m+[m
+[32m+[m	[32m//HITBOX:[m
+[32m+[m[41m	[m
+[32m+[m	[32m//Unit hitbox[m
+[32m+[m	[32msf::RectangleShape bumperBody;[m
+[32m+[m	[32msf::FloatRect hitbox;[m
+[32m+[m	[32msf::FloatRect bumperHitbox;[m
+[32m+[m	[32msf::RectangleShape rangeBody;[m
+[32m+[m	[32msf::FloatRect rangeHitbox;[m
+[32m+[m[41m	[m
+[32m+[m[41m	[m
+[32m+[m[41m	[m
+[32m+[m	[32m// UNIT STATS:[m
+[32m+[m[41m	[m
+[32m+[m	[32m//Velocity which unit travel[m
+[32m+[m	[32mfloat movementSpeed;[m
+[32m+[m[41m	[m
+[32m+[m	[32mfloat maxHealth;[m
+[32m+[m[41m	[m
+[32m+[m	[32mfloat Atk;[m
+[32m+[m	[32m//Attack Spped in Attacks per second[m
+[32m+[m	[32mfloat AtkSpd;[m
+[32m+[m
+[32m+[m	[32mfloat range;[m
+[32m+[m
+[32m+[m[41m	[m
+[32m+[m
+[32m+[m[41m	[m
+[32m+[m	[32m//Healthbar body[m
+[32m+[m	[32mHealthbar* healthbarBODY;[m
+[32m+[m[41m	[m
+[32m+[m	[32m//CurrentHealth[m
+[32m+[m	[32mfloat currentHealth;[m
+[32m+[m
+[32m+[m	[32m//Attack Speed Timer[m
+[32m+[m	[32msf::Clock atkCD;[m
+[32m+[m
+[32m+[m	[32m//Function that initialize variables[m
+[32m+[m	[32mvoid initVariables();[m
+[32m+[m
+[32m+[m	[32m//Function that initialize bumper[m
+[32m+[m	[32mvoid initBumper(bool friendly);[m
+[32m+[m
+[32m+[m	[32m//Function that initialize range attack body[m
+[32m+[m	[32mvoid initRangeBody(float range, bool friendly);[m
+[32m+[m[32mpublic:[m
+[32m+[m
+[32m+[m	[32m//Does it have healthbar (basicly every unit)[m
+[32m+[m	[32mbool healthbar;[m
+[32m+[m	[32m//Occupation[m
+[32m+[m	[32mbool friendly;[m
+[32m+[m
+[32m+[m	[32m//Constructor that creates specific unit[m
+[32m+[m	[32mUnit(sf::String unitType, sf::Vector2f position, bool friendly);[m
+[32m+[m
+[32m+[m	[32m//Destructor[m
+[32m+[m	[32m~Unit();[m
+[32m+[m
+[32m+[m	[32m//Function that update Unit logic ex. hitboxes, death status[m
+[32m+[m	[32mvoid update(sf::Time elapsed);[m
+[32m+[m
+[32m+[m	[32m//Funcion that render sprites[m
+[32m+[m	[32mvoid render(sf::RenderWindow* window);[m
+[32m+[m
+[32m+[m	[32m//Funcion that keeps unit moving[m
+[32m+[m	[32mvoid move(sf::Time elapsed);[m
+[32m+[m
+[32m+[m	[32m//Function that returns body of a Unit[m
+[32m+[m	[32msf::RectangleShape  const getBody() const;[m
+[32m+[m
+[32m+[m	[32m//Function that returns hitbox of a Unit[m
+[32m+[m	[32msf::FloatRect const getHitbox() const;[m
+[32m+[m
+[32m+[m	[32m//Function that returns hitbox of a Bumper[m
+[32m+[m	[32msf::FloatRect const getBumperHitbox() const;[m
+[32m+[m
+[32m+[m	[32m//Function that returns true if user click on the unit[m
+[32m+[m	[32mbool isClicked();[m
+[32m+[m
+[32m+[m	[32m//FIGHTING:[m
+[32m+[m
+[32m+[m	[32m//Function that lowers current health of a unit[m
+[32m+[m	[32mvoid takeDamage(float amount);[m
+[32m+[m
+[32m+[m	[32m//[m
+[32m+[m	[32mvoid attack(Unit* target);[m
+[32m+[m
+[32m+[m	[32m//Function that returns max health[m
+[32m+[m	[32mfloat const maxHP() const;[m
+[32m+[m
+[32m+[m	[32m//Function that returns current health[m
+[32m+[m	[32mfloat const health() const;[m
+[32m+[m
+[32m+[m	[32m//Returns Atk[m
+[32m+[m	[32mfloat const atk() const;[m
+[32m+[m
+[32m+[m	[32m//Returns AtkSpd[m
+[32m+[m	[32mfloat const atkSpd() const;[m
+[32m+[m
+[32m+[m[41m	[m
+[32m+[m
+[32m+[m
+[32m+[m[41m	[m
+[32m+[m
+[32m+[m[41m	[m
+[32m+[m[41m	[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m
