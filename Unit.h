@@ -31,6 +31,7 @@ protected:
 	
 	//Velocity which unit travel
 	float movementSpeed;
+	float originalSpeed;
 	
 	float maxHealth;
 	
@@ -91,6 +92,9 @@ public:
 	//Function that returns hitbox of a Bumper
 	sf::FloatRect const getBumperHitbox() const;
 
+	//Function that returns hitbox of a archerBody
+	sf::FloatRect const getRangeHitbox() const;
+
 	//Function that returns true if user click on the unit
 	bool isClicked();
 
@@ -113,6 +117,18 @@ public:
 
 	//Returns AtkSpd
 	float const atkSpd() const;
+
+	//Returns range
+	float const range_() const;
+
+	//Returns actual speed
+	float const speed() const;
+
+	//Returns orginal speed
+	float const orginalSpeed_() const;
+
+	//Change movement spped
+	void fixSpeed(float value);
 
 	
 

@@ -80,16 +80,40 @@ void GameEngine::update()
     //Collision beetwen units. Units have two options, move or attack
     for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)
     {
-        if (*it != nullptr)
+        //Fix speed
+        if ((*it) != nullptr)
         {
-            (*it)->update(elapsed);
-            if (!isColliding(*it))
+            if (isColliding(*it))
             {
-                (*it)->move(elapsed);
+                if ((*it)->speed() > isCollidingWith(*it)->speed() && (*it)->friendly == isCollidingWith(*it)->friendly)
+                {
+                    (*it)->fixSpeed(isCollidingWith(*it)->speed());
+                }
             }
             else
             {
-                tryAttack(*it);
+                if ((*it)->friendly)
+                {
+                    (*it)->fixSpeed((*it)->orginalSpeed_());
+                }
+                else
+                {
+                    (*it)->fixSpeed((*it)->orginalSpeed_() * -1);
+                }
+            }
+        }
+        //
+
+        if (*it != nullptr)
+        {
+            (*it)->update(elapsed);
+            if ((*it)->range_() == 0)
+            {
+                meleeUnitLogic(*it);
+            }
+            if ((*it)->range_() > 0);
+            {
+                rangeUnitLogic(*it);
             }
         } 
     }
@@ -341,7 +365,84 @@ bool GameEngine::isSpawnPointFree(sf::Vector2f spawnPoint)
     return true;
 }
 
-void GameEngine::tryAttack(Unit* unit)
+bool GameEngine::isEnemyInRange(Unit* unit)
+{
+    float leftB = unit->getRangeHitbox().left;
+    float rightB = unit->getRangeHitbox().left + unit->getRangeHitbox().width;
+    for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)
+    {
+        if (*it != nullptr && (*it)->friendly != unit->friendly)
+        {
+            float itLeft = (*it)->getHitbox().left;
+            float itRight = (*it)->getHitbox().left + (*it)->getHitbox().width;
+            std::cout << "archerBounds: (" << leftB << " ," << rightB << ") ------ it: (" << itLeft << " ," << itRight << ")" << std::endl;
+            if ((itLeft >= leftB && itLeft <= rightB) || (itRight >= leftB && itRight <= rightB))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool GameEngine::isAllyInRange(Unit* unit)
+{
+    for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)
+    {
+        if (*it != nullptr && (*it)->friendly == unit->friendly)
+        {
+            float leftB = unit->getRangeHitbox().left;
+            float rightB = unit->getRangeHitbox().left + unit->getRangeHitbox().width;
+            float itLeft = (*it)->getHitbox().left;
+            float itRight = (*it)->getHitbox().left + (*it)->getHitbox().width;
+            if ((itLeft >= leftB && itLeft <= rightB) || (itRight >= leftB && itRight <= rightB))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+Unit* GameEngine::closestEnemyInRange(Unit* unit)
+{
+    std::vector<Unit*> units;
+
+    for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)
+    {
+        if (*it != nullptr && (*it)->friendly != unit->friendly)
+        {
+            float leftB = unit->getRangeHitbox().left;
+            float rightB = unit->getRangeHitbox().left + unit->getRangeHitbox().width;
+            float itLeft = (*it)->getHitbox().left;
+            float itRight = (*it)->getHitbox().left + (*it)->getHitbox().width;
+            if ((itLeft >= leftB && itLeft <= rightB) || (itRight >= leftB && itRight <= rightB))
+            {
+                units.push_back(*it);
+            }
+        }
+    }
+
+    Unit* closestUnit = nullptr;
+    float smallestDist = 99999;
+
+    for (auto it = units.begin(); it != units.end(); ++it)
+    {
+        if (*it != nullptr)
+        {
+            float dist;
+            dist = abs(unit->getBody().getPosition().x - (*it)->getBody().getPosition().x);
+            if (dist < smallestDist)
+            {
+                smallestDist = dist;
+                closestUnit = *it;
+            }
+        }
+    }
+    return closestUnit;
+}
+
+void GameEngine::tryMeeleAttack(Unit* unit)
 {
     if (unit != nullptr)
     {
@@ -351,6 +452,37 @@ void GameEngine::tryAttack(Unit* unit)
         }
     }
 }
+
+void GameEngine::meleeUnitLogic(Unit* unit)
+{
+    if (!isColliding(unit))
+    {
+        (unit)->move(elapsed);
+    }
+    else
+    {
+        tryMeeleAttack(unit);
+    }
+}
+
+void GameEngine::rangeUnitLogic(Unit* unit)
+{
+    if (isColliding(unit) || (!isAllyInRange(unit) && isEnemyInRange(unit)))
+    {
+       
+        if (isEnemyInRange(unit))
+        {
+            unit->attack(closestEnemyInRange(unit));
+        
+        }
+    }
+    else
+    {
+        unit->move(elapsed);
+    }
+
+}
+
 
 
 
