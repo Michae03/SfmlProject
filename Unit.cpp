@@ -6,6 +6,7 @@
 void Unit::initVariables()
 {
     this->movementSpeed = NULL;
+    this->originalSpeed = NULL;
     this->currentHealth = NULL;
     this->maxHealth = NULL;
     this->AtkSpd = NULL;
@@ -105,6 +106,7 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
     }
    
     currentHealth = maxHealth;
+    originalSpeed = movementSpeed;
 
 
     //Additional settings:
@@ -189,6 +191,26 @@ float const Unit::atkSpd() const
     return AtkSpd;
 }
 
+float const Unit::range_() const
+{
+    return range;
+}
+
+float const Unit::speed() const
+{
+    return movementSpeed;
+}
+
+float const Unit::orginalSpeed_() const
+{
+    return originalSpeed;
+}
+
+void Unit::fixSpeed(float value)
+{
+    this->movementSpeed = value;
+}
+
 sf::RectangleShape const Unit::getBody() const
 {
     return body;
@@ -206,6 +228,11 @@ sf::FloatRect const Unit::getHitbox() const
 sf::FloatRect const Unit::getBumperHitbox() const
 {
     return bumperHitbox;
+}
+
+sf::FloatRect const Unit::getRangeHitbox() const
+{
+    return rangeHitbox;
 }
 
 bool Unit::isClicked()
@@ -251,10 +278,8 @@ void Unit::update(sf::Time elapsed)
 {
     hitbox = body.getGlobalBounds();
     bumperHitbox = bumperBody.getGlobalBounds();
-    if (range > 0)
-    {
-        rangeHitbox = rangeBody.getGlobalBounds();
-    }
+    rangeHitbox = rangeBody.getGlobalBounds();
+    
 
     if (healthbarBODY != nullptr)
     {

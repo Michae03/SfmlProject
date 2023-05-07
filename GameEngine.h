@@ -6,6 +6,7 @@
 #include "Unit.h"
 #include "Button.h"
 #include <vector>
+#include <cstdlib>
 
 // Game Engine
 
@@ -97,6 +98,11 @@ public:
 
 	//FIGHTING:
 	//Unit attempt attack on another unit that is colliding with
-	void tryAttack(Unit* unit);
+	void tryMeeleAttack(Unit* unit);
+
+	void meleeUnitLogic(Unit* unit);
+
+	void rangeUnitLogic(Unit* unit);
+
 };
 
