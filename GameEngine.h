@@ -6,6 +6,7 @@
 #include "Unit.h"
 #include "Button.h"
 #include "LoadingBar.h"
+#include "MiniMap.h"
 #include <vector>
 #include <cstdlib>
 
@@ -29,6 +30,12 @@ private:
 	//Spawn points for units
 	sf::Vector2f allySpawnPoint;
 	sf::Vector2f enemySpawnPoint;
+
+	//Minimap
+	float const constCameraMove = 15;
+	float cameraOffset;
+	MiniMap minimap;
+
 
 	//Loading Bars
 	float const buttonCDCONST = 0.75;

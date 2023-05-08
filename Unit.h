@@ -86,6 +86,9 @@ public:
 	//Funcion that keeps unit moving
 	void move(sf::Time elapsed);
 
+	//function that moves unit 
+	void moves(sf::Vector2f distance);
+
 	//Function that returns body of a Unit
 	sf::RectangleShape  const getBody() const;
 

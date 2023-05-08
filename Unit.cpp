@@ -80,7 +80,7 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
         body.setFillColor(sf::Color(100, 50, 250));
         hitbox = body.getGlobalBounds();
         //Init Stats
-        movementSpeed = 70;
+        movementSpeed = 100;
         maxHealth = 3000;
         Atk = 200;
         AtkSpd = 1.2;
@@ -95,7 +95,7 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
         body.setFillColor(sf::Color(100, 50, 250));
         hitbox = body.getGlobalBounds();
         //Init Stats
-        movementSpeed = 30;
+        movementSpeed = 60;
         maxHealth = 5000;
         Atk = 750;
         AtkSpd = 0.4;
@@ -110,7 +110,7 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
         body.setFillColor(sf::Color(100, 50, 250));
         hitbox = body.getGlobalBounds();
         //Init Stats
-        movementSpeed = 70;
+        movementSpeed = 110;
         maxHealth = 1200;
         Atk = 250;
         AtkSpd = 1;
@@ -126,6 +126,10 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
     //Additional settings:
     //Fixed spawn position
     body.setPosition(sf::Vector2f(position.x, position.y - this->body.getSize().y));
+    if (unitType == "BASE" && !friendly)
+    {
+        body.setPosition(sf::Vector2f(position.x - 100, position.y - this->body.getSize().y));
+    }
 
     //Unit Type
     uType = unitType;
@@ -145,6 +149,10 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
         movementSpeed *= -1;
         this->friendly = false;
         body.setFillColor(sf::Color::Red);
+        if (unitType == "BASE")
+        {
+            this->body.setFillColor(sf::Color(255, 0, 0, 160));
+        }
     }
 
 }
@@ -169,13 +177,13 @@ void Unit::render(sf::RenderWindow* window)
         {
             this->healthbarBODY->render(window, this);
         }
-
+        /*
         window->draw(this->bumperBody);
         if (range > 0)
         {
             window->draw(this->rangeBody);
         }
-       
+       */
     }
     catch (std::exception& e) {
         std::cerr << "Error rendering unit: " << e.what() << std::endl;
@@ -193,6 +201,19 @@ void Unit::move(sf::Time elapsed)
         healthbarBODY->background.move(this->movementSpeed * elapsed.asSeconds(), 0);
     }
    
+}
+
+void Unit::moves(sf::Vector2f distance)
+{
+    body.move(distance);
+    bumperBody.move(distance);
+    rangeBody.move(distance);
+    if (healthbarBODY != nullptr)
+    {
+        healthbarBODY->move(distance);
+        healthbarBODY->background.move(distance);
+    }
+
 }
 
 float const Unit::health() const
