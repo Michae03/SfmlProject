@@ -163,7 +163,17 @@ void GameEngine::pollEvents()
             {
                 this->window->close();
             }
+            //Map travel
+            if (event.key.code == sf::Keyboard::A)
+            {
+                //Checks if units are clicked
+                for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)
+                {
+                    (*it)->moves(sf::Vector2f(1, 0));
+                }
+            }
         }
+
 
         //Checks if buttons are clicked
         pollButtons(buttonCDCONST);

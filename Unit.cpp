@@ -176,6 +176,19 @@ void Unit::move(sf::Time elapsed)
    
 }
 
+void Unit::moves(sf::Vector2f distance)
+{
+    body.move(distance);
+    bumperBody.move(distance);
+    rangeBody.move(distance);
+    if (healthbarBODY != nullptr)
+    {
+        healthbarBODY->move(distance);
+        healthbarBODY->background.move(distance);
+    }
+
+}
+
 float const Unit::health() const
 {
     return currentHealth;
