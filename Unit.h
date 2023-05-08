@@ -13,6 +13,9 @@
 class Unit
 {
 protected:
+	//Unit type
+	sf::String uType;
+
 	//Unit "body"
 	sf::RectangleShape body;
 
@@ -130,8 +133,14 @@ public:
 	//Returns orginal speed
 	float const orginalSpeed_() const;
 
+	//Returns orginal speed
+	sf::String const uType_() const;
+
 	//Change movement spped
 	void fixSpeed(float value);
+
+	//Change unit position
+	void setPosiotion(sf::Vector2f position);
 
 	
 

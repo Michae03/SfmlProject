@@ -10,7 +10,7 @@ void GameEngine::initWindow()
 {
     this->videomode.height = 1080;
     this->videomode.width = 1920;
-    this->window = new sf::RenderWindow(this->videomode, "Test_Game");
+    this->window = new sf::RenderWindow(this->videomode, "Test_Game",sf::Style::Fullscreen);
     this->window->setFramerateLimit(120);
 }
 
@@ -38,11 +38,16 @@ GameEngine::GameEngine()
     this->initVariables();
     this->initWindow();
     this->initButtons();
-
+    
     clickCD = LoadingBar(sf::Vector2f(150, 50), sf::Vector2f(960 - 150, 36));
 
-    allySpawnPoint = sf::Vector2f(100, this->videomode.height - 200);
-    enemySpawnPoint = sf::Vector2f(this->videomode.width - 100, this->videomode.height - 200);
+    allySpawnPoint = sf::Vector2f(0, this->videomode.height);
+    enemySpawnPoint = sf::Vector2f(this->videomode.width , this->videomode.height);
+
+    //Creates base
+    SpawnUnit("BASE", true);
+    SpawnUnit("BASE", false);
+    //
 }
 
 GameEngine::~GameEngine()
@@ -113,9 +118,16 @@ void GameEngine::update()
             {
                 meleeUnitLogic(*it);
             }
-            if ((*it)->range_() > 0);
+            if ((*it)->range_() > 0 && (*it)-> uType_()!= "BASE");
             {
                 rangeUnitLogic(*it);
+            }
+            if ((*it)->uType_() == "BASE")
+            {
+                if (isEnemyInRange(*it))
+                {
+                    (*it)->attack(closestEnemyInRange(*it));
+                }
             }
         } 
     }
@@ -196,40 +208,40 @@ void GameEngine::pollEvents()
 void GameEngine::pollButtons(float const clickCD)
 {
     
-    
     if (Buttons.at(0)->isClicked() && isSpawnPointFree(allySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= clickCD)
     {
-        SpawnedUnits.push_back(new Unit("DUMMY", allySpawnPoint, true));
+        SpawnUnit("DUMMY", true);
         std::cout << "0 Button clicked" << std::endl;
         buttonCD.restart();
     }
     if (Buttons.at(1)->isClicked() && isSpawnPointFree(allySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= clickCD)
     {
-        SpawnedUnits.push_back(new Unit("DUMMY_2", allySpawnPoint, true));
+        SpawnUnit("DUMMY_2", true);
         std::cout << "1 Button clicked" << std::endl;
         buttonCD.restart();
     }
     if (Buttons.at(2)->isClicked() && isSpawnPointFree(enemySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= clickCD)
     {
-        SpawnedUnits.push_back(new Unit("DUMMY", enemySpawnPoint, false));
+        SpawnUnit("DUMMY", false);
         std::cout << "2 Button clicked" << std::endl;
         buttonCD.restart();
     }
     if (Buttons.at(3)->isClicked() && isSpawnPointFree(enemySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= clickCD)
     {
         SpawnedUnits.push_back(new Unit("DUMMY_2", enemySpawnPoint, false));
+        SpawnUnit("DUMMY_2", false);
         std::cout << "3 Button clicked" << std::endl;
         buttonCD.restart();
     }
     if (Buttons.at(4)->isClicked() && isSpawnPointFree(allySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= clickCD)
     {
-        SpawnedUnits.push_back(new Unit("Archer_DUMMY", allySpawnPoint, true));
+        SpawnUnit("Archer_DUMMY", true);
         std::cout << "3 Button clicked" << std::endl;
         buttonCD.restart();
     }
     if (Buttons.at(5)->isClicked() && isSpawnPointFree(enemySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= clickCD)
     {
-        SpawnedUnits.push_back(new Unit("Archer_DUMMY", enemySpawnPoint, false));
+        SpawnUnit("Archer_DUMMY", false);
         std::cout << "3 Button clicked" << std::endl;
         buttonCD.restart();
     }
@@ -362,7 +374,7 @@ bool GameEngine::isSpawnPointFree(sf::Vector2f spawnPoint)
 {
     for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)
     {
-        if (*it != nullptr)
+        if (*it != nullptr && (*it)->uType_() != "BASE")
         {
             float left = (*it)->getHitbox().left;
             float right = (*it)->getHitbox().left + (*it)->getHitbox().width;
@@ -457,6 +469,22 @@ Unit* GameEngine::closestEnemyInRange(Unit* unit)
     }
     return closestUnit;
 }
+
+void GameEngine::SpawnUnit(sf::String unitType, bool friendly)
+{
+    sf::Vector2f spawnPoint;
+    if (friendly)
+    {
+        spawnPoint = allySpawnPoint;
+    }
+    else 
+    {
+        spawnPoint = enemySpawnPoint;
+    }
+
+    SpawnedUnits.push_back(new Unit(unitType, spawnPoint, friendly));
+}
+
 
 void GameEngine::tryMeeleAttack(Unit* unit)
 {
