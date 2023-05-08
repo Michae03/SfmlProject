@@ -64,7 +64,7 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
         body.setFillColor(sf::Color(100, 50, 250));
         hitbox = body.getGlobalBounds();
         //Init Stats
-        movementSpeed = 100;
+        movementSpeed = 70;
         maxHealth = 3000;
         Atk = 200;
         AtkSpd = 1.2;
@@ -80,7 +80,7 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
         body.setFillColor(sf::Color(100, 50, 250));
         hitbox = body.getGlobalBounds();
         //Init Stats
-        movementSpeed = 40;
+        movementSpeed = 30;
         maxHealth = 5000;
         Atk = 750;
         AtkSpd = 0.4;
@@ -96,7 +96,7 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
         body.setFillColor(sf::Color(100, 50, 250));
         hitbox = body.getGlobalBounds();
         //Init Stats
-        movementSpeed = 100;
+        movementSpeed = 70;
         maxHealth = 1200;
         Atk = 250;
         AtkSpd = 1;

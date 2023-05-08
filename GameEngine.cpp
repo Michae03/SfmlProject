@@ -39,6 +39,8 @@ GameEngine::GameEngine()
     this->initWindow();
     this->initButtons();
 
+    clickCD = LoadingBar(sf::Vector2f(150, 50), sf::Vector2f(960 - 150, 36));
+
     allySpawnPoint = sf::Vector2f(100, this->videomode.height - 200);
     enemySpawnPoint = sf::Vector2f(this->videomode.width - 100, this->videomode.height - 200);
 }
@@ -117,6 +119,8 @@ void GameEngine::update()
             }
         } 
     }
+    //Updates loading bars
+    clickCD.update(buttonCD.getElapsedTime().asMilliseconds(), 1000 * buttonCDCONST);
 
     //Writes in console
     this->consoleLog();
@@ -162,7 +166,8 @@ void GameEngine::pollEvents()
         }
 
         //Checks if buttons are clicked
-        pollButtons();
+        pollButtons(buttonCDCONST);
+        
 
        //Checks if units are clicked
         for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)
@@ -178,41 +183,41 @@ void GameEngine::pollEvents()
     }
 }
 
-void GameEngine::pollButtons()
+void GameEngine::pollButtons(float const clickCD)
 {
-    float const buttonCDCONST = 0.75;
     
-    if (Buttons.at(0)->isClicked() && isSpawnPointFree(allySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= buttonCDCONST)
+    
+    if (Buttons.at(0)->isClicked() && isSpawnPointFree(allySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= clickCD)
     {
         SpawnedUnits.push_back(new Unit("DUMMY", allySpawnPoint, true));
         std::cout << "0 Button clicked" << std::endl;
         buttonCD.restart();
     }
-    if (Buttons.at(1)->isClicked() && isSpawnPointFree(allySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= buttonCDCONST)
+    if (Buttons.at(1)->isClicked() && isSpawnPointFree(allySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= clickCD)
     {
         SpawnedUnits.push_back(new Unit("DUMMY_2", allySpawnPoint, true));
         std::cout << "1 Button clicked" << std::endl;
         buttonCD.restart();
     }
-    if (Buttons.at(2)->isClicked() && isSpawnPointFree(enemySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= buttonCDCONST)
+    if (Buttons.at(2)->isClicked() && isSpawnPointFree(enemySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= clickCD)
     {
         SpawnedUnits.push_back(new Unit("DUMMY", enemySpawnPoint, false));
         std::cout << "2 Button clicked" << std::endl;
         buttonCD.restart();
     }
-    if (Buttons.at(3)->isClicked() && isSpawnPointFree(enemySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= buttonCDCONST)
+    if (Buttons.at(3)->isClicked() && isSpawnPointFree(enemySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= clickCD)
     {
         SpawnedUnits.push_back(new Unit("DUMMY_2", enemySpawnPoint, false));
         std::cout << "3 Button clicked" << std::endl;
         buttonCD.restart();
     }
-    if (Buttons.at(4)->isClicked() && isSpawnPointFree(allySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= buttonCDCONST)
+    if (Buttons.at(4)->isClicked() && isSpawnPointFree(allySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= clickCD)
     {
         SpawnedUnits.push_back(new Unit("Archer_DUMMY", allySpawnPoint, true));
         std::cout << "3 Button clicked" << std::endl;
         buttonCD.restart();
     }
-    if (Buttons.at(5)->isClicked() && isSpawnPointFree(enemySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= buttonCDCONST)
+    if (Buttons.at(5)->isClicked() && isSpawnPointFree(enemySpawnPoint) && buttonCD.getElapsedTime().asSeconds() >= clickCD)
     {
         SpawnedUnits.push_back(new Unit("Archer_DUMMY", enemySpawnPoint, false));
         std::cout << "3 Button clicked" << std::endl;
@@ -249,7 +254,9 @@ void GameEngine::render()
     {
         (*it)->Button::render(this->window);
     }
-        
+
+    clickCD.render(window);
+
     //---Display frame in window
     this->window->display();
 }
@@ -375,7 +382,6 @@ bool GameEngine::isEnemyInRange(Unit* unit)
         {
             float itLeft = (*it)->getHitbox().left;
             float itRight = (*it)->getHitbox().left + (*it)->getHitbox().width;
-            std::cout << "archerBounds: (" << leftB << " ," << rightB << ") ------ it: (" << itLeft << " ," << itRight << ")" << std::endl;
             if ((itLeft >= leftB && itLeft <= rightB) || (itRight >= leftB && itRight <= rightB))
             {
                 return true;

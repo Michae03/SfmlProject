@@ -24,9 +24,18 @@ LoadingBar::LoadingBar(sf::Vector2f size, sf::Vector2f position)
     this->setPosition(background.getPosition());
 }
 
-void LoadingBar::update(float nominator, float denominator, sf::Time elapsed)
+void LoadingBar::update(float nominator, float denominator)
 {
-    this->setSize(sf::Vector2f(nominator * elapsed.asSeconds() / denominator, background.getSize().y));
+    if (nominator >= denominator)
+    {
+        this->setSize(this->background.getSize());
+        this->setFillColor(sf::Color::Green);
+    }
+    else
+    {
+        this->setSize(sf::Vector2f((nominator / denominator) * this->background.getSize().x, background.getSize().y));
+        this->setFillColor(sf::Color::Red);
+    }
 }
 
 void LoadingBar::render(sf::RenderWindow* window)

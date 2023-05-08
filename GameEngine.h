@@ -5,8 +5,10 @@
 #include <iostream>
 #include "Unit.h"
 #include "Button.h"
+#include "LoadingBar.h"
 #include <vector>
 #include <cstdlib>
+
 
 // Game Engine
 
@@ -27,6 +29,10 @@ private:
 	//Spawn points for units
 	sf::Vector2f allySpawnPoint;
 	sf::Vector2f enemySpawnPoint;
+
+	//Loading Bars
+	float const buttonCDCONST = 0.75;
+	LoadingBar clickCD;
 
 	//Buttons
 	std::vector<Button*> Buttons;
@@ -66,7 +72,7 @@ public:
 	void pollEvents();	
 
 	//Check if any button is clicked
-	void pollButtons();
+	void pollButtons(float const clickCD);
 
 	//Update game logic
 	void update();		
