@@ -126,6 +126,10 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
     //Additional settings:
     //Fixed spawn position
     body.setPosition(sf::Vector2f(position.x, position.y - this->body.getSize().y));
+    if (unitType == "BASE" && !friendly)
+    {
+        body.setPosition(sf::Vector2f(position.x - 100, position.y - this->body.getSize().y));
+    }
 
     //Unit Type
     uType = unitType;
@@ -145,6 +149,10 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
         movementSpeed *= -1;
         this->friendly = false;
         body.setFillColor(sf::Color::Red);
+        if (unitType == "BASE")
+        {
+            this->body.setFillColor(sf::Color(255, 0, 0, 160));
+        }
     }
 
 }
@@ -169,13 +177,13 @@ void Unit::render(sf::RenderWindow* window)
         {
             this->healthbarBODY->render(window, this);
         }
-
+        /*
         window->draw(this->bumperBody);
         if (range > 0)
         {
             window->draw(this->rangeBody);
         }
-       
+       */
     }
     catch (std::exception& e) {
         std::cerr << "Error rendering unit: " << e.what() << std::endl;

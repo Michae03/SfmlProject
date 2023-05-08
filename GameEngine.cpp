@@ -10,7 +10,7 @@ void GameEngine::initWindow()
 {
     this->videomode.height = 1080;
     this->videomode.width = 1920;
-    this->window = new sf::RenderWindow(this->videomode, "Test_Game",sf::Style::Fullscreen);
+    this->window = new sf::RenderWindow(this->videomode, "Test_Game",sf::Style::Default);
     this->window->setFramerateLimit(120);
 }
 
@@ -41,8 +41,8 @@ GameEngine::GameEngine()
     
     clickCD = LoadingBar(sf::Vector2f(150, 50), sf::Vector2f(960 - 150, 36));
 
-    allySpawnPoint = sf::Vector2f(0, this->videomode.height);
-    enemySpawnPoint = sf::Vector2f(this->videomode.width , this->videomode.height);
+    allySpawnPoint = sf::Vector2f(0, 1080);
+    enemySpawnPoint = sf::Vector2f(4000 , 1080);
 
     //Creates base
     SpawnUnit("BASE", true);
@@ -176,12 +176,31 @@ void GameEngine::pollEvents()
                 this->window->close();
             }
             //Map travel
-            if (event.key.code == sf::Keyboard::A)
+            float const constMove = 15;
+            if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left)
             {
-                //Checks if units are clicked
+                allySpawnPoint.x += constMove;
+                enemySpawnPoint.x += constMove;
+
                 for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)
                 {
-                    (*it)->moves(sf::Vector2f(1, 0));
+                    if (*it != nullptr)
+                    {
+                        (*it)->moves(sf::Vector2f(constMove, 0));
+                    }
+                }
+            }
+            if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right)
+            {
+                allySpawnPoint.x -= constMove;
+                enemySpawnPoint.x -= constMove;
+
+                for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)
+                { 
+                    if (*it != nullptr)
+                    {
+                        (*it)->moves(sf::Vector2f(-constMove, 0));
+                    }
                 }
             }
         }
