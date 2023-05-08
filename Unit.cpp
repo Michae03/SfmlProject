@@ -56,11 +56,27 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
     initVariables();
 
     //Unit type
+    if (unitType == "BASE")
+    {
+        //Body
+        body.setSize(sf::Vector2f(250, 250));
+        body.setFillColor(sf::Color(100, 50, 250, 160));
+       
+        hitbox = body.getGlobalBounds();
+        //Init Stats
+        movementSpeed = 0;
+        maxHealth = 10000;
+        Atk = 40;
+        AtkSpd = 11;
+        range = 200;
+        //
+        this->healthbar = true;
+    }
+
     if (unitType == "DUMMY")
     {   
         //Body
         body.setSize(sf::Vector2f(50, 100));
-        body.setPosition(position);
         body.setFillColor(sf::Color(100, 50, 250));
         hitbox = body.getGlobalBounds();
         //Init Stats
@@ -76,7 +92,6 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
     {
         //Body
         body.setSize(sf::Vector2f(100, 120));
-        body.setPosition(position);
         body.setFillColor(sf::Color(100, 50, 250));
         hitbox = body.getGlobalBounds();
         //Init Stats
@@ -92,7 +107,6 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
     {
         //Body
         body.setSize(sf::Vector2f(50, 75));
-        body.setPosition(position);
         body.setFillColor(sf::Color(100, 50, 250));
         hitbox = body.getGlobalBounds();
         //Init Stats
@@ -110,7 +124,12 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
 
 
     //Additional settings:
-    
+    //Fixed spawn position
+    body.setPosition(sf::Vector2f(position.x, position.y - this->body.getSize().y));
+
+    //Unit Type
+    uType = unitType;
+
     //Healthbar
     healthbarBODY = new Healthbar(*this);
 
@@ -206,9 +225,19 @@ float const Unit::orginalSpeed_() const
     return originalSpeed;
 }
 
+sf::String const Unit::uType_() const
+{
+    return uType;
+}
+
 void Unit::fixSpeed(float value)
 {
     this->movementSpeed = value;
+}
+
+void Unit::setPosiotion(sf::Vector2f position)
+{
+    this->body.setPosition(position);
 }
 
 sf::RectangleShape const Unit::getBody() const

@@ -100,6 +100,9 @@ public:
 
 	//Returns enemy unit that is closest in range
 	Unit* closestEnemyInRange(Unit* unit);
+
+	//Spawns unit
+	void SpawnUnit(sf::String unitType, bool friendly);
 	
 
 	//FIGHTING:

@@ -8,7 +8,7 @@ GameEngine game;
 
 int main()
 {
-    std::cout << "V0.4.6 is working" << std::endl;
+    std::cout << "V0.4.7 is working" << std::endl;
     //Game loop
     while (game.running())
     {
