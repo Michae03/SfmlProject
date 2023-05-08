@@ -10,7 +10,7 @@ void GameEngine::initWindow()
 {
     this->videomode.height = 1080;
     this->videomode.width = 1920;
-    this->window = new sf::RenderWindow(this->videomode, "Test_Game");
+    this->window = new sf::RenderWindow(this->videomode, "Test_Game",sf::Style::Fullscreen);
     this->window->setFramerateLimit(120);
 }
 
@@ -45,8 +45,8 @@ GameEngine::GameEngine()
     enemySpawnPoint = sf::Vector2f(this->videomode.width , this->videomode.height);
 
     //Creates base
-    //SpawnedUnits.push_back(new Unit("BASE", allySpawnPoint, true));
-    //SpawnedUnits.push_back(new Unit("BASE", sf::Vector2f(enemySpawnPoint.x - 250, this->videomode.height - 250), false));
+    SpawnUnit("BASE", true);
+    SpawnUnit("BASE", false);
     //
 }
 
@@ -118,9 +118,16 @@ void GameEngine::update()
             {
                 meleeUnitLogic(*it);
             }
-            if ((*it)->range_() > 0);
+            if ((*it)->range_() > 0 && (*it)-> uType_()!= "BASE");
             {
                 rangeUnitLogic(*it);
+            }
+            if ((*it)->uType_() == "BASE")
+            {
+                if (isEnemyInRange(*it))
+                {
+                    (*it)->attack(closestEnemyInRange(*it));
+                }
             }
         } 
     }

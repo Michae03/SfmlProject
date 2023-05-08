@@ -67,7 +67,7 @@ Unit::Unit(sf::String unitType, sf::Vector2f position, bool friendly)
         movementSpeed = 0;
         maxHealth = 10000;
         Atk = 40;
-        AtkSpd = 0.1;
+        AtkSpd = 11;
         range = 200;
         //
         this->healthbar = true;
