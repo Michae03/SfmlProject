@@ -4,6 +4,7 @@
 void GameEngine::initVariables()
 {
     this->window = nullptr;
+    cameraOffset = 0;
 }
 
 void GameEngine::initWindow()
@@ -19,10 +20,10 @@ void GameEngine::initButtons()
     sf::Vector2f buttonSize(75, 75);
     Buttons.push_back(new Button(sf::Vector2f(100, 100), buttonSize, sf::Color::Black)); //Button player 1
     Buttons.push_back(new Button(sf::Vector2f(100, 200), buttonSize, sf::Color::Black)); //Button player 2
-    Buttons.push_back(new Button(sf::Vector2f(1500, 100), buttonSize, sf::Color::Black)); //Button enemy 1
-    Buttons.push_back(new Button(sf::Vector2f(1500, 200), buttonSize, sf::Color::Black)); //Button enemy 2
+    Buttons.push_back(new Button(sf::Vector2f(1200, 100), buttonSize, sf::Color::Black)); //Button enemy 1
+    Buttons.push_back(new Button(sf::Vector2f(1200, 200), buttonSize, sf::Color::Black)); //Button enemy 2
     Buttons.push_back(new Button(sf::Vector2f(100, 300), buttonSize, sf::Color::Black)); //Button player 3
-    Buttons.push_back(new Button(sf::Vector2f(1500, 300), buttonSize, sf::Color::Black)); //Button enemy 3
+    Buttons.push_back(new Button(sf::Vector2f(1200, 300), buttonSize, sf::Color::Black)); //Button enemy 3
 }
 
 void GameEngine::consoleLog()
@@ -38,11 +39,15 @@ GameEngine::GameEngine()
     this->initVariables();
     this->initWindow();
     this->initButtons();
-    
+
     clickCD = LoadingBar(sf::Vector2f(150, 50), sf::Vector2f(960 - 150, 36));
 
     allySpawnPoint = sf::Vector2f(0, 1080);
     enemySpawnPoint = sf::Vector2f(4000 , 1080);
+
+
+    minimap = MiniMap(0, enemySpawnPoint.x, 1080, allySpawnPoint.x);
+
 
     //Creates base
     SpawnUnit("BASE", true);
@@ -118,7 +123,7 @@ void GameEngine::update()
             {
                 meleeUnitLogic(*it);
             }
-            if ((*it)->range_() > 0 && (*it)-> uType_()!= "BASE");
+            if ((*it)->range_() > 0 && (*it)-> uType_()!= "BASE")
             {
                 rangeUnitLogic(*it);
             }
@@ -176,30 +181,29 @@ void GameEngine::pollEvents()
                 this->window->close();
             }
             //Map travel
-            float const constMove = 15;
-            if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left)
+            if ((event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) && allySpawnPoint.x < 0)
             {
-                allySpawnPoint.x += constMove;
-                enemySpawnPoint.x += constMove;
-
+                allySpawnPoint.x += constCameraMove;
+                enemySpawnPoint.x += constCameraMove;
+                cameraOffset += constCameraMove;
                 for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)
                 {
                     if (*it != nullptr)
                     {
-                        (*it)->moves(sf::Vector2f(constMove, 0));
+                        (*it)->moves(sf::Vector2f(constCameraMove, 0));
                     }
                 }
             }
-            if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right)
+            if ((event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) && enemySpawnPoint.x > 1920 - 145 )
             {
-                allySpawnPoint.x -= constMove;
-                enemySpawnPoint.x -= constMove;
-
+                allySpawnPoint.x -= constCameraMove;
+                enemySpawnPoint.x -= constCameraMove;
+                cameraOffset -= constCameraMove;
                 for (auto it = SpawnedUnits.begin(); it != SpawnedUnits.end(); ++it)
                 { 
                     if (*it != nullptr)
                     {
-                        (*it)->moves(sf::Vector2f(-constMove, 0));
+                        (*it)->moves(sf::Vector2f(-constCameraMove, 0));
                     }
                 }
             }
@@ -298,8 +302,14 @@ void GameEngine::render()
 
     clickCD.render(window);
 
+    //Render object on minimap
+    minimap.renderUnitsOnMiniMap(SpawnedUnits, window, cameraOffset);
+
+
     //---Display frame in window
     this->window->display();
+
+  
 }
 
 void GameEngine::kill(Unit*& unit)
