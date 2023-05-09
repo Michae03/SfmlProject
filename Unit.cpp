@@ -177,13 +177,13 @@ void Unit::render(sf::RenderWindow* window)
         {
             this->healthbarBODY->render(window, this);
         }
-        /*
+       
         window->draw(this->bumperBody);
         if (range > 0)
         {
             window->draw(this->rangeBody);
         }
-       */
+       
     }
     catch (std::exception& e) {
         std::cerr << "Error rendering unit: " << e.what() << std::endl;
@@ -272,7 +272,6 @@ sf::FloatRect const Unit::getHitbox() const
     {
         return hitbox;
     }
-    
 }
 
 sf::FloatRect const Unit::getBumperHitbox() const

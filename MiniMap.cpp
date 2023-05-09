@@ -17,6 +17,11 @@ MiniMap::MiniMap(float topBoundarg, float rightBoundarg, float bottomBoundarg, f
 	rightBound = rightBoundarg;
 	bottomBound = bottomBoundarg;
 	leftBound = leftBoundarg;
+	currentPosition.setSize(sf::Vector2f(1920 * scaleX, this->getSize().y));
+	currentPosition.setPosition(this->getPosition());
+	currentPosition.setFillColor(sf::Color::Transparent);
+	currentPosition.setOutlineThickness(1);
+	currentPosition.setOutlineColor(sf::Color::Black);
 }
 
 void MiniMap::renderUnitsOnMiniMap(std::vector<Unit*> units, sf::RenderWindow* window, float offset)
@@ -45,4 +50,16 @@ void MiniMap::renderUnitsOnMiniMap(std::vector<Unit*> units, sf::RenderWindow* w
 		}
 	}
 	
+}
+
+void MiniMap::render(std::vector<Unit*> units, sf::RenderWindow* window, float offset)
+{
+	renderUnitsOnMiniMap(units, window, offset);
+	window->draw(currentPosition);;
+}
+
+void MiniMap::update(float constPointZero)
+{
+	currentPosition.setPosition(this->getPosition());
+	currentPosition.setPosition(sf::Vector2f(-constPointZero * scaleX + currentPosition.getPosition().x, currentPosition.getPosition().y));
 }
