@@ -161,6 +161,8 @@ void GameEngine::update()
             (*it)->update();
         }
     }
+    //Update minimap
+    minimap.update(allySpawnPoint.x);
 }
 
 
@@ -253,6 +255,7 @@ void GameEngine::pollButtons(float const clickCD)
     {
         SpawnedUnits.push_back(new Unit("DUMMY_2", enemySpawnPoint, false));
         SpawnUnit("DUMMY_2", false);
+        SpawnedUnits.back()->takeDamage(SpawnedUnits.back()->maxHP());
         std::cout << "3 Button clicked" << std::endl;
         buttonCD.restart();
     }
@@ -303,7 +306,7 @@ void GameEngine::render()
     clickCD.render(window);
 
     //Render object on minimap
-    minimap.renderUnitsOnMiniMap(SpawnedUnits, window, cameraOffset);
+    minimap.render(SpawnedUnits, window, cameraOffset);
 
 
     //---Display frame in window
