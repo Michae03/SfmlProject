@@ -9,6 +9,7 @@
 #include "MiniMap.h"
 #include <vector>
 #include <cstdlib>
+#include <fstream>
 
 
 // Game Engine
@@ -30,6 +31,13 @@ private:
 	//Spawn points for units
 	sf::Vector2f allySpawnPoint;
 	sf::Vector2f enemySpawnPoint;
+
+	//Fonts
+	std::ifstream arialFile;
+	sf::Font arial;
+
+	//Text
+	sf::Text goldText;
 
 	//Minimap
 	float const constCameraMove = 15;
@@ -55,6 +63,10 @@ private:
 	void initWindow();	
 	//Initialize Buttons
 	void initButtons();
+	//Initialize Fonts
+	void initFonts();
+	//Initialize text
+	void initText();
 	//Console Log
 	void consoleLog();
 
