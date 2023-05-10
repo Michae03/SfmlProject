@@ -12,7 +12,6 @@ private:
 	void initVariables();
 
 public:
-
 	//Constructor
 	Button();
 	Button(sf::Vector2f position, sf::Vector2f size, sf::Color color);
@@ -26,7 +25,5 @@ public:
 	//Renders button on screen
 	void render(sf::RenderWindow* window);
 
-
-	
 };
 

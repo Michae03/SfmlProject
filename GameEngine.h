@@ -66,13 +66,9 @@ public:
 	//Destructor
 	virtual ~GameEngine();
 
-	//Accesors
-
 	//Check if the game is running
 	const bool running() const; 
 
-	//
-	
 	//Functions
 
 	//Poll events

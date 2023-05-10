@@ -43,7 +43,7 @@ GameEngine::GameEngine()
     clickCD = LoadingBar(sf::Vector2f(150, 50), sf::Vector2f(960 - 150, 36));
 
     allySpawnPoint = sf::Vector2f(0, 1080);
-    enemySpawnPoint = sf::Vector2f(4000 , 1080);
+    enemySpawnPoint = sf::Vector2f(2500 , 1080);
 
 
     minimap = MiniMap(0, enemySpawnPoint.x, 1080, allySpawnPoint.x);
